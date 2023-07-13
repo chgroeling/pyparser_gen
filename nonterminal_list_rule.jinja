@@ -1,0 +1,18 @@
+def {{rule_name}}(self):
+    """ {{rule_name}} -> {{p[0].nonterminal}}* {{p[1].terminal}}
+    """
+    res = list()
+    if self.match(terminals.{{p[1].terminal}}):
+        terminal = self.previous()
+        return ([], terminal)
+
+    expr = self.{{p[0].nonterminal}}()
+    res.append(expr)
+
+    while not self.match(terminals.{{p[1].terminal}}):
+        expr = self.{{p[0].nonterminal}}()
+        res.append(expr)
+    terminal = self.previous()
+    return (res, terminal)
+
+ 

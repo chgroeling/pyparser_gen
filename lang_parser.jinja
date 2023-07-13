@@ -1,0 +1,42 @@
+import terminals
+
+class LangParser:
+    def __init__(self, tokens):
+        self._current = 0
+        self._tokens = tokens
+
+    def isAtEnd(self):
+        return self.peek()[0] == terminals.EOF
+
+    def peek(self):
+        return self._tokens[self._current]
+
+    def previous(self):
+        return self._tokens[self._current - 1]
+
+    def check(self, token_type):
+        token = self.peek()
+        token_type_r = token[0]
+        return token_type == token_type_r
+
+    def advance(self):
+        self._current+=1
+        return self.previous()
+  
+    def match(self,token_type):
+        if self.check(token_type):
+          self.advance()
+          return True
+ 
+        return False
+
+    # ===================================================
+    # Rules
+    # ===================================================    
+    {% for i in rules %}
+    {{i | indent }}
+
+    {%- endfor %}
+
+if __name__ == "__main__":
+    pass

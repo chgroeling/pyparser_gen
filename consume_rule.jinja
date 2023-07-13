@@ -1,0 +1,9 @@
+def {{rule_name}}(self):
+    """ {{rule_name}} -> {{p[0].terminal}}
+    """
+    if self.match(terminals.{{p[0].terminal}}):
+        terminal = self.previous()
+        return terminal
+    else:
+        raise Exception()
+

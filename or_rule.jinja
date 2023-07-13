@@ -1,0 +1,42 @@
+def {{rule_name}}(self):
+    """ {{rule_name}} ->
+    {%- for i in p[:-1] %}
+        {%- if  i.nonterminal %}
+           {{i.terminal}} {{i.nonterminal}} {{i.optionalterminal}}
+        {%- else %} 
+           {{i.terminal}} 
+        {%- endif %}
+        {%- if  p[-1] != None %}
+        {{- " |" }}
+        {%- else %} 
+        {{- " |" if not loop.last}}
+        {%- endif %}
+    {%- endfor %}
+        {%- if  p[-1] != None %}
+           {{ p[-1].nonterminal }} {{p[-1].terminal}}
+        {%- endif %}
+    """
+    {% for i in p[:-1]  %}
+    if self.match(terminals.{{i.terminal}}):
+        {%- if  i.nonterminal %} 
+        terminal_0 = self.previous()
+        expr = self.{{i.nonterminal}}() 
+        if self.match(terminals.{{i.optionalterminal}}):
+            terminal_1 = self.previous() 
+        else:
+            raise Exception("Rule {{rule_name}} doesn't match")
+            
+        return (terminal_0, expr, terminal_1) 
+        {%- else %} 
+        terminal = self.previous()
+        return terminal 
+        {%- endif %}
+    {% endfor %}
+    {%- if  p[-1] != None %}
+    expr = self.{{ p[-1].nonterminal }}()
+    if self.match(terminals.{{p[-1].terminal}}):
+        terminal = self.previous() 
+        return (expr, terminal)
+    {%- endif %}
+    raise Exception("Rule {{rule_name}} doesn't match")
+
