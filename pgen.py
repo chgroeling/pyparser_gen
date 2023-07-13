@@ -100,7 +100,7 @@ class TemplateRenderer:
 
 
 if __name__ == "__main__":
-    tr = TemplateRenderer(pathlib.PurePath("."))
+    tr = TemplateRenderer(pathlib.PurePath("./templates"))
 
     template = tr.get_template(pathlib.PurePath("lang_parser.jinja"))
 
