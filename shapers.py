@@ -10,6 +10,47 @@ class AstExpression:
             return "AstExpression"
         raise Exception("Index out of bounds!")
 
+class AstId:
+    def __init__(self, id):
+        self.id = id
+
+    def __repr__(self):
+        return f"AstId({self.id})"
+
+    def __getitem__(self, item):
+        if item == 0:
+            return "AstId"
+        raise Exception("Index out of bounds!")
+
+class AstReal:
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return f"AstReal({self.value})"
+
+    def __getitem__(self, item):
+        if item == 0:
+            return "AstReal"
+        raise Exception("Index out of bounds!")
+    
+
+
+class AstBinOp:
+    def __init__(self, lhs, op, rhs):
+        self.lhs = lhs
+        self.op = op
+        self.rhs = rhs
+
+    def __repr__(self):
+        return f"AstBinOp({self.lhs} {self.op} {self.rhs})"
+
+    def __getitem__(self, item):
+        if item == 0:
+            return "AstBinOp"
+
+        raise Exception("Index out of bounds!")
+
 
 class AstParameterConnect:
     def __init__(self, parameter, expression):
@@ -48,17 +89,42 @@ class AstUseTable:
         if item == 0:
             return "AstUseTable"
         raise Exception("Index out of bounds!")
+    
+def shape_primary_to_ast(parse_tree):
+    if parse_tree[0][0]=="ID":
+        return AstId(parse_tree[0].value)
+    
+    if parse_tree[0][0]=="REAL":
+        return AstReal(parse_tree[0].value)
+
+    raise Exception(f"Primary unknown")
+
+def shape_add_to_ast(parse_tree):
+    if len(parse_tree) == 1:
+        if (parse_tree[0][0] == "AstId") or (parse_tree[0][0] == "AstBinOp"):  
+            return parse_tree[0]
+        raise Exception(f"Only ID allowed {parse_tree}")
+    else:
+        for i in range(0, len(parse_tree), 3):
+            expr = AstBinOp(parse_tree[0], parse_tree[1], parse_tree[2])
+    return expr
 
 
-def shape_expression_to_ast(parse_tree):
-    expr = AstExpression(parse_tree)
+def shape_mul_to_ast(parse_tree):
+    if len(parse_tree) == 1:
+        if parse_tree[0][0] == "AstId":
+            return parse_tree[0]
+        raise Exception(f"Only ID allowed {parse_tree}")
+    else:
+        for i in range(0, len(parse_tree), 3):
+            expr = AstBinOp(parse_tree[0], parse_tree[1], parse_tree[2])
     return expr
 
 
 def shape_parameter_connect_to_ast(parse_tree):
     terminal, expr = parse_tree
     connect = expr[0]
-    assert(connect[0],"CONNECT")
+    assert (connect[0], "CONNECT")
     expression = expr[1]
     expr = AstParameterConnect(terminal, expression)
     return expr
@@ -78,7 +144,7 @@ def shape_parameter_connect_with_optional_comment_to_ast(parse_tree):
 
 
 def simplify_statements(parse_tree):
-    assert(len(parse_tree)>0)
+    assert len(parse_tree) > 0
     if len(parse_tree) == 1:
         if parse_tree[0][0] == "NEWLINE":
             return parse_tree[0]

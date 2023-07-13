@@ -14,19 +14,19 @@ NonTerminalTerminalParameter = namedtuple(
 RULES = [
     [
         "primary",
-        None,
+        "shape_primary_to_ast",
         "or_rule.jinja",
         [OrParameter("ID", None, None), OrParameter("REAL", None, None), None],
     ],
     [
         "multiply",
-        None,
+        "shape_mul_to_ast",
         "nonterminal_list_with_delimiter_rule.jinja",
         [NonTerminalParameter("primary"), TerminalParameter("MULTIPLY")],
     ],
     [
         "expression",
-        "shape_expression_to_ast",
+        "shape_add_to_ast",
         "nonterminal_list_with_delimiter_rule.jinja",
         [NonTerminalParameter("multiply"), TerminalParameter("ADD")],
     ],

@@ -36,7 +36,7 @@ def {{rule_name}}(self):
         {%- if  shaper != None %}
         return shapers.{{shaper}}((terminal,))
         {%- else %}
-        return (terminal)
+        return (terminal,)
         {%- endif %}  
         {%- endif %}
     {% endfor %}
