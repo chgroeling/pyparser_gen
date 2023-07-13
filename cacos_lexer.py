@@ -55,6 +55,7 @@ class CacosLexer:
             "COMMENT" : r'\#.*',                  # Ignore everything until newline
             "REAL" : r'[+-]?([0-9]*[.])?[0-9]+',
             "MULTIPLY" : r'\*',
+            "ADD" : r'\+',
             "USE_TABLE": r'USE_TABLE',
             "NEWLINE" : r'\n',
             "DOT": r'\.',

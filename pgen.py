@@ -19,10 +19,16 @@ RULES = [
         [OrParameter("ID", None, None), OrParameter("REAL", None, None), None],
     ],
     [
+        "multiply",
+        None,
+        "nonterminal_list_with_delimiter_rule.jinja",
+        [NonTerminalParameter("primary"), TerminalParameter("MULTIPLY")],
+    ],
+    [
         "expression",
         "shape_expression_to_ast",
         "nonterminal_list_with_delimiter_rule.jinja",
-        [NonTerminalParameter("primary"), TerminalParameter("MULTIPLY")],
+        [NonTerminalParameter("multiply"), TerminalParameter("ADD")],
     ],
     [
         "connect",

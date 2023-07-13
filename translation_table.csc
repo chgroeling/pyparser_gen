@@ -30,7 +30,7 @@ USE_TABLE control
 
 USE_TABLE motdat
     P1.718.0.0  <-- POL_PAAR                   # Polpaarzahl
-    P1.7111.0.0 <-- TRAEG_ROTO * 0.0001        # + TRAEG_BREM * 0.0000001 
+    P1.7111.0.0 <-- TRAEG_ROTO * 0.0001+TRAEG_BREM* 0.0000001  # + TRAEG_BREM * 0.0000001 
     P1.7117.0.0 <-- NENNSTROM                  # Nennsstrom Effektivwert 
     P1.7120.0.0 <-- STROM_MAX                  # MAximalstrom Effektivwert
     P1.7123.0.0 <-- DREH_MAX                   # Maximale Drehzahl in rpm
@@ -54,4 +54,3 @@ USE_TABLE motdat
     P1.71430.0.0 <-- INDUKTION                  # qAxisInductance ... TODO: ANLEGEN IN CACOS
     P1.71431.0.0 <-- INDUKTION                  # dAxisInductance  ... TODO: ANLEGEN IN CACOS
     P1.71432.0.0 <-- MOT_TYP                    # Motor Typ
-    

@@ -51,8 +51,8 @@ class LangParser:
         
         raise Exception("Rule 'primary' does not match")
 
-    def expression(self):
-        """ expression -> primary (MULTIPLY primary)*
+    def multiply(self):
+        """ multiply -> primary (MULTIPLY primary)*
         """
         res = list()
 
@@ -64,6 +64,22 @@ class LangParser:
             res.append(terminal)
             
             expr = self.primary()
+            res.append(expr)
+        return res
+        
+    def expression(self):
+        """ expression -> multiply (ADD multiply)*
+        """
+        res = list()
+
+        expr = self.multiply()
+        res.append(expr)
+
+        while self.match(terminals.ADD):
+            terminal = self.previous()
+            res.append(terminal)
+            
+            expr = self.multiply()
             res.append(expr)
         return shapers.shape_expression_to_ast(res)
         
