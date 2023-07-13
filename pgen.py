@@ -53,7 +53,7 @@ RULES = [
     ],
     [
         "use_table",
-        None,
+        "shape_use_table",
         "consume_rule.jinja",
         [TerminalParameter("ID")],
     ],

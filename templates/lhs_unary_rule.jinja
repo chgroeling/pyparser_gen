@@ -12,6 +12,6 @@ def {{rule_name}}(self):
         return (terminal, expr)
         {%- endif %}
     else:
-        raise Exception()
+        raise Exception("Rule '{{rule_name}}' does not match")
 
         

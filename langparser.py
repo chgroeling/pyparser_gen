@@ -49,7 +49,7 @@ class LangParser:
             terminal = self.previous()
             return (terminal)
         
-        raise Exception("Rule primary doesn't match")
+        raise Exception("Rule 'primary' does not match")
 
     def expression(self):
         """ expression -> primary (MULTIPLY primary)*
@@ -76,7 +76,7 @@ class LangParser:
             expr = self.expression()
             return (terminal, expr)
         else:
-            raise Exception()
+            raise Exception("Rule 'connect' does not match")
 
             
     def parameter(self):
@@ -88,7 +88,7 @@ class LangParser:
             expr = self.connect()
             return shapers.shape_parameter_connect_to_ast((terminal, expr))
         else:
-            raise Exception()
+            raise Exception("Rule 'parameter' does not match")
 
             
     def parameter_with_comment(self):
@@ -108,9 +108,9 @@ class LangParser:
         """
         if self.match(terminals.ID):
             terminal = self.previous()
-            return terminal
+            return shapers.shape_use_table((terminal,))
         else:
-            raise Exception()
+            raise Exception("Rule '{rule_name}' does not match!")
 
     def statement(self):
         """ statement -> 
@@ -141,7 +141,7 @@ class LangParser:
         if self.match(terminals.NEWLINE):
             terminal = self.previous()
             return shapers.simplify_statements((expr, terminal))
-        raise Exception("Rule statement doesn't match")
+        raise Exception("Rule 'statement' does not match")
 
     def program(self):
         """ program -> statement* EOF

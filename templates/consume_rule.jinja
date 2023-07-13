@@ -3,7 +3,12 @@ def {{rule_name}}(self):
     """
     if self.match(terminals.{{p[0].terminal}}):
         terminal = self.previous()
-        return terminal
+
+         {%- if  shaper != None %}
+        return shapers.{{shaper}}((terminal,))
+        {%- else %}
+        return (terminal,)
+        {%- endif %}
     else:
-        raise Exception()
+        raise Exception("Rule '{rule_name}' does not match!")
 
