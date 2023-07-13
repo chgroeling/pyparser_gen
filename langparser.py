@@ -1,4 +1,5 @@
 import terminals
+import shapers
 
 class LangParser:
     def __init__(self, tokens):
@@ -42,11 +43,11 @@ class LangParser:
         
         if self.match(terminals.ID): 
             terminal = self.previous()
-            return terminal
+            return (terminal)
         
         if self.match(terminals.REAL): 
             terminal = self.previous()
-            return terminal
+            return (terminal)
         
         raise Exception("Rule primary doesn't match")
 
@@ -64,10 +65,8 @@ class LangParser:
             
             expr = self.primary()
             res.append(expr)
-
-        return res
-
-     
+        return shapers.shape_expression_to_ast(res)
+        
     def connect(self):
         """ connect -> CONNECT expression 
         """
@@ -87,7 +86,7 @@ class LangParser:
         if self.match(terminals.PARAMETER):
             terminal = self.previous()
             expr = self.connect()
-            return (terminal, expr)
+            return shapers.shape_parameter_connect_to_ast((terminal, expr))
         else:
             raise Exception()
 
@@ -99,9 +98,10 @@ class LangParser:
         
         if self.match(terminals.COMMENT):
             terminal = self.previous()
-            return (expr, terminal)
+            return shapers.shape_parameter_connect_with_optional_comment_to_ast((expr, terminal))
         else:
-            return (expr, None)
+            return shapers.shape_parameter_connect_with_optional_comment_to_ast((expr, None))
+            
 
     def use_table(self):
         """ use_table -> ID
@@ -122,11 +122,11 @@ class LangParser:
         
         if self.match(terminals.NEWLINE): 
             terminal = self.previous()
-            return terminal
+            return shapers.simplify_statements((terminal,))
         
         if self.match(terminals.COMMENT): 
             terminal = self.previous()
-            return terminal
+            return shapers.simplify_statements((terminal,))
         
         if self.match(terminals.USE_TABLE): 
             terminal_0 = self.previous()
@@ -135,13 +135,12 @@ class LangParser:
                 terminal_1 = self.previous() 
             else:
                 raise Exception("Rule statement doesn't match")
-                
-            return (terminal_0, expr, terminal_1)
+            return shapers.simplify_statements((terminal_0, expr, terminal_1))
         
         expr = self.parameter_with_comment()
         if self.match(terminals.NEWLINE):
-            terminal = self.previous() 
-            return (expr, terminal)
+            terminal = self.previous()
+            return shapers.simplify_statements((expr, terminal))
         raise Exception("Rule statement doesn't match")
 
     def program(self):
@@ -150,7 +149,7 @@ class LangParser:
         res = list()
         if self.match(terminals.EOF):
             terminal = self.previous()
-            return ([], terminal)
+            return shapers.simplify_statement_list((tuple(), terminal))
 
         expr = self.statement()
         res.append(expr)
@@ -159,7 +158,7 @@ class LangParser:
             expr = self.statement()
             res.append(expr)
         terminal = self.previous()
-        return (res, terminal)
+        return shapers.simplify_statement_list((res, terminal))
 
      
 

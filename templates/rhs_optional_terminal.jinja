@@ -5,7 +5,16 @@ def {{rule_name}}(self):
     
     if self.match(terminals.{{p[1].terminal}}):
         terminal = self.previous()
+        {%- if  shaper != None %}
+        return shapers.{{shaper}}((expr, terminal))
+        {%- else %}
         return (expr, terminal)
+        {%- endif %}
     else:
+        {%- if  shaper != None %}
+        return shapers.{{shaper}}((expr, None))
+        {%- else %}
         return (expr, None)
+        {%- endif %}
+        
 

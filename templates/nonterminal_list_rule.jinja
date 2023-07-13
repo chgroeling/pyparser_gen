@@ -4,7 +4,11 @@ def {{rule_name}}(self):
     res = list()
     if self.match(terminals.{{p[1].terminal}}):
         terminal = self.previous()
-        return ([], terminal)
+        {%- if  shaper != None %}
+        return shapers.{{shaper}}((tuple(), terminal))
+        {%- else %}
+        return (tuple(), terminal)
+        {%- endif %}
 
     expr = self.{{p[0].nonterminal}}()
     res.append(expr)
@@ -13,6 +17,11 @@ def {{rule_name}}(self):
         expr = self.{{p[0].nonterminal}}()
         res.append(expr)
     terminal = self.previous()
+
+    {%- if  shaper != None %}
+    return shapers.{{shaper}}((res, terminal))
+    {%- else %}
     return (res, terminal)
+    {%- endif %}
 
  

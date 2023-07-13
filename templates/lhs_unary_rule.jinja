@@ -5,7 +5,12 @@ def {{rule_name}}(self):
     if self.match(terminals.{{p[0].terminal}}):
         terminal = self.previous()
         expr = self.{{p[1].nonterminal}}()
+
+        {%- if  shaper != None %}
+        return shapers.{{shaper}}((terminal, expr))
+        {%- else %}
         return (terminal, expr)
+        {%- endif %}
     else:
         raise Exception()
 

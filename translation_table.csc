@@ -54,3 +54,4 @@ USE_TABLE motdat
     P1.71430.0.0 <-- INDUKTION                  # qAxisInductance ... TODO: ANLEGEN IN CACOS
     P1.71431.0.0 <-- INDUKTION                  # dAxisInductance  ... TODO: ANLEGEN IN CACOS
     P1.71432.0.0 <-- MOT_TYP                    # Motor Typ
+    

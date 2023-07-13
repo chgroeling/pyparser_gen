@@ -7,28 +7,26 @@ from collections import namedtuple
 OrParameter = namedtuple("OrParameter", "terminal nonterminal optionalterminal")
 TerminalParameter = namedtuple("TerminalParameter", "terminal")
 NonTerminalParameter = namedtuple("NonTerminalParameter", "nonterminal")
-NonTerminalTerminalParameter = namedtuple("NonTerminalParameter", "nonterminal, terminal")
+NonTerminalTerminalParameter = namedtuple(
+    "NonTerminalParameter", "nonterminal, terminal"
+)
 
 RULES = [
     [
         "primary",
-        "CONSUME",
-        'or_rule.jinja', 
-        [
-            OrParameter("ID", None, None),
-            OrParameter("REAL", None, None),
-            None 
-        ],
+        None,
+        "or_rule.jinja",
+        [OrParameter("ID", None, None), OrParameter("REAL", None, None), None],
     ],
     [
         "expression",
-        "CONSUME",
+        "shape_expression_to_ast",
         "nonterminal_list_with_delimiter_rule.jinja",
         [NonTerminalParameter("primary"), TerminalParameter("MULTIPLY")],
     ],
     [
         "connect",
-        "BINARY",
+        None,
         "lhs_unary_rule.jinja",
         [
             TerminalParameter("CONNECT"),
@@ -37,7 +35,7 @@ RULES = [
     ],
     [
         "parameter",
-        "BINARY",
+        "shape_parameter_connect_to_ast",
         "lhs_unary_rule.jinja",
         [
             TerminalParameter("PARAMETER"),
@@ -46,36 +44,33 @@ RULES = [
     ],
     [
         "parameter_with_comment",
-        "BINARY",
+        "shape_parameter_connect_with_optional_comment_to_ast",
         "rhs_optional_terminal.jinja",
         [
             NonTerminalParameter("parameter"),
             TerminalParameter("COMMENT"),
         ],
     ],
-
     [
         "use_table",
-        "STATEMENT",
-        'consume_rule.jinja', 
-        [
-            TerminalParameter("ID")
-        ],
+        None,
+        "consume_rule.jinja",
+        [TerminalParameter("ID")],
     ],
     [
         "statement",
-        "STATEMENT",
-        'or_rule.jinja', 
+        "simplify_statements",
+        "or_rule.jinja",
         [
             OrParameter("NEWLINE", None, None),
             OrParameter("COMMENT", None, None),
             OrParameter("USE_TABLE", "use_table", "NEWLINE"),
-            NonTerminalTerminalParameter("parameter_with_comment", "NEWLINE")
+            NonTerminalTerminalParameter("parameter_with_comment", "NEWLINE"),
         ],
     ],
     [
         "program",
-        "STATEMENT",
+        "simplify_statement_list",
         "nonterminal_list_rule.jinja",
         [NonTerminalParameter("statement"), TerminalParameter("EOF")],
     ],
@@ -107,13 +102,12 @@ if __name__ == "__main__":
     rules = []
     for i in RULES:
         rule_name = i[0]
+        rule_shaper = i[1]
         rule_def = i[2]
         p = i[3]
         rule_template = tr.get_template(pathlib.PurePath(rule_def))
         rules.append(
-            rule_template.render(
-                rule_name=rule_name, p = p
-            )
+            rule_template.render(shaper=rule_shaper, rule_name=rule_name, p=p)
         )
     buf = template.render(rules=rules)
     with open("langparser.py", "w") as fp:

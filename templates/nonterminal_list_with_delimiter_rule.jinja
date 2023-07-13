@@ -12,7 +12,10 @@ def {{rule_name}}(self):
         
         expr = self.{{p[0].nonterminal}}()
         res.append(expr)
-
+    
+    {%- if  shaper != None %}
+    return shapers.{{shaper}}(res)
+    {%- else %}
     return res
-
- 
+    {%- endif %}
+    
