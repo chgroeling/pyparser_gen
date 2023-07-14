@@ -45,6 +45,8 @@ class Lexer:
             if not matched:
                 raise ValueError(f"Unexpected character: {remaining_string[0]}")
             
+        # Add newline because last instruction must be terminated with one
+        tokens.append(Token("NEWLINE", "\n"))
         # Add EOF Token to indicate the following parser that the end of the token list was reached
         tokens.append(Token("EOF", "\0"))
         return tokens
@@ -62,7 +64,7 @@ class CacosLexer:
             "PARAMETER": r'P\d+\.\d+\.\d+\.\d+',
             "CONNECT": r'(?:<--)',                    # The arrow indicates a connection
             "ID": r'[A-Za-z]+[A-za-z0-9]*',      # LITERALS .. second char can be a decimal
-            "WHITESPACE": r'\s+',
+            "WHITESPACE": r'[ ]+',
         }
 
         self.__lexer_inst = Lexer(rules)

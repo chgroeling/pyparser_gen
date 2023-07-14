@@ -17,7 +17,6 @@ for i in lexer.tokenize(commands):
         continue
     tokens.append(i)
 
-
 parser=langparser.LangParser(tokens)
 result = parser.program()
 
