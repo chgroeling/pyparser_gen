@@ -1,5 +1,5 @@
-import terminals
-import shapers
+from . import terminals
+from . import shapers
 
 class LangParser:
     def __init__(self, tokens):

@@ -1,8 +1,7 @@
-import langparser
 import pprint
 
-import cacos_lexer
-
+import langparser.langparser as langparser
+import langparser.cacos_lexer as cacos_lexer
 
 commands = None
 with open("translation_table.csc") as fp:

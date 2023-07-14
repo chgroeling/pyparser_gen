@@ -112,7 +112,7 @@ class TemplateRenderer:
 
 
 if __name__ == "__main__":
-    tr = TemplateRenderer(pathlib.PurePath("./templates"))
+    tr = TemplateRenderer(pathlib.PurePath("templates"))
 
     template = tr.get_template(pathlib.PurePath("lang_parser.jinja"))
 
@@ -126,5 +126,5 @@ if __name__ == "__main__":
         rules.append(rule_template.render(shaper=rule_shaper, rule_name=rule_name, p=p))
 
     buf = template.render(rules=rules)
-    with open("langparser.py", "w") as fp:
+    with open("./langparser/langparser.py", "w") as fp:
         fp.write(buf)
