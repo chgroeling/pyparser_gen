@@ -29,7 +29,7 @@ USE_TABLE control
 # - Berechnungsvorschrift Eduardo
 
 USE_TABLE motdat
-    P1.718.0.0  <-- POL_PAAR                   # Polpaarzahl
+    P1.718.0.0  <-- POL_PAAR                   
     P1.7111.0.0 <-- TRAEG_ROTO * 0.0001+TRAEG_BREM* 0.0000001  # + TRAEG_BREM * 0.0000001 
     P1.7117.0.0 <-- NENNSTROM                  # Nennsstrom Effektivwert 
     P1.7120.0.0 <-- STROM_MAX                  # MAximalstrom Effektivwert

@@ -1,6 +1,7 @@
+""" This script generates a parser in the file "langparser.py"
+"""
 import jinja2
 import pathlib
-import sys
 from collections import namedtuple
 
 
@@ -11,6 +12,14 @@ NonTerminalTerminalParameter = namedtuple(
     "NonTerminalParameter", "nonterminal, terminal"
 )
 
+# Definition of rules
+# A rule has the following structure
+# [
+#    rule name,
+#    shape_function,  - can be None
+#    jinja2 template,
+#    parameters
+# ]
 RULES = [
     [
         "primary",
@@ -84,6 +93,8 @@ RULES = [
 
 
 class TemplateRenderer:
+    """Helper class for jinja2 template rendering"""
+
     def __init__(self, template_dir, filters=dict()):
         assert isinstance(template_dir, pathlib.PurePath)
 
@@ -112,9 +123,8 @@ if __name__ == "__main__":
         rule_def = i[2]
         p = i[3]
         rule_template = tr.get_template(pathlib.PurePath(rule_def))
-        rules.append(
-            rule_template.render(shaper=rule_shaper, rule_name=rule_name, p=p)
-        )
+        rules.append(rule_template.render(shaper=rule_shaper, rule_name=rule_name, p=p))
+
     buf = template.render(rules=rules)
     with open("langparser.py", "w") as fp:
         fp.write(buf)

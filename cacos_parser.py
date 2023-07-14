@@ -43,11 +43,11 @@ class LangParser:
         
         if self.match(terminals.ID): 
             terminal = self.previous()
-            return (terminal)
+            return shapers.shape_primary_to_ast((terminal,))
         
         if self.match(terminals.REAL): 
             terminal = self.previous()
-            return (terminal)
+            return shapers.shape_primary_to_ast((terminal,))
         
         raise Exception("Rule 'primary' does not match")
 
@@ -65,7 +65,7 @@ class LangParser:
             
             expr = self.primary()
             res.append(expr)
-        return res
+        return shapers.shape_mul_to_ast(res)
         
     def expression(self):
         """ expression -> multiply (ADD multiply)*
@@ -81,7 +81,7 @@ class LangParser:
             
             expr = self.multiply()
             res.append(expr)
-        return shapers.shape_expression_to_ast(res)
+        return shapers.shape_add_to_ast(res)
         
     def connect(self):
         """ connect -> CONNECT expression 
